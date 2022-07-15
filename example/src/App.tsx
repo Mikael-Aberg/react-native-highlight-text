@@ -1,18 +1,26 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-text-highlight';
+import { StyleSheet, Text, View } from 'react-native';
+import Highlight from 'react-native-text-highlight';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text
+        style={{
+          color: 'red',
+        }}
+      >
+        Hello
+      </Text>
+      <Highlight
+        split={[
+          [0, 1],
+          [2, 7, 'red', 'blue'],
+        ]}
+      >
+        Hello world!
+      </Highlight>
     </View>
   );
 }
