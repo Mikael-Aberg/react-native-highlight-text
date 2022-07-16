@@ -15,6 +15,7 @@ interface Props {
   highlightStyle?: StyleProp<TextStyle>;
   children?: string;
   split?: HighlightSplit[];
+  wordMatch?: string[];
   highlightRegex?: RegExp;
 }
 
@@ -24,18 +25,21 @@ const Highlight = (props: Props) => {
     backgroundColor: props.highlightColor,
   };
 
+  const matchAll = (regex: RegExp): HighlightSplit[] => {
+    return Array.from(props.children?.matchAll(regex) || []).map((match) => {
+      return [match.index || 0, (match.index || 0) + (match[0]?.length || 0)];
+    });
+  };
+
   let split: HighlightSplit[] = [];
 
-  split = props.highlightRegex?.global
-    ? Array.from(props.children?.matchAll(props.highlightRegex) || []).map(
-        (match) => {
-          return [
-            match.index || 0,
-            (match.index || 0) + (match[0]?.length || 0),
-          ];
-        }
-      )
-    : props.split?.sort((a, b) => a[0] - b[0]) || [];
+  if (props.highlightRegex?.global) {
+    split = matchAll(props.highlightRegex);
+  } else if (props.wordMatch && props.wordMatch.length > 0) {
+    split = matchAll(new RegExp(`(${props.wordMatch.join('|')})`, 'g'));
+  } else {
+    split = props.split?.sort((a, b) => a[0] - b[0]) || [];
+  }
 
   const splitString = (
     index: number,

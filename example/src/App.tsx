@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Highlight, { type HighlightSplit } from 'react-native-text-highlight';
+import Highlight, { type HighlightSplit } from 'react-native-highlight-text';
 
 export default function App() {
   // Generate a random color code
@@ -31,6 +31,14 @@ export default function App() {
         highlightRegex={/(\d+)/g}
       >
         Highlight a sentence with RegEx! 12.234.54.676
+      </Highlight>
+      <Highlight
+        highlightColor={rc()}
+        highlightTextColor={rc()}
+        style={styles.text}
+        wordMatch={['matching', 'words', 'sentence!']}
+      >
+        Highlight matching words in a sentence!
       </Highlight>
     </View>
   );
