@@ -15,6 +15,7 @@ interface Props {
   highlightStyle?: StyleProp<TextStyle>;
   children?: string;
   split?: HighlightSplit[];
+  highlightRegex?: RegExp;
 }
 
 const Highlight = (props: Props) => {
@@ -25,7 +26,16 @@ const Highlight = (props: Props) => {
 
   let split: HighlightSplit[] = [];
 
-  split = props.split?.sort((a, b) => a[0] - b[0]) || [];
+  split = props.highlightRegex?.global
+    ? Array.from(props.children?.matchAll(props.highlightRegex) || []).map(
+        (match) => {
+          return [
+            match.index || 0,
+            (match.index || 0) + (match[0]?.length || 0),
+          ];
+        }
+      )
+    : props.split?.sort((a, b) => a[0] - b[0]) || [];
 
   const splitString = (
     index: number,
@@ -36,7 +46,7 @@ const Highlight = (props: Props) => {
       1: end,
       2: color,
       3: backgroundColor,
-    } = props.split?.[index] || [];
+    } = split?.[index] || [];
     if (start === undefined || end === undefined) {
       console.warn(`Index ${index} contains undefined value`);
       return null;
@@ -58,7 +68,7 @@ const Highlight = (props: Props) => {
       </Text>
     );
 
-    return index + 1 !== props.split?.length ? (
+    return index + 1 !== split?.length ? (
       <>
         {pre}
         {cur}
@@ -95,7 +105,7 @@ const Highlight = (props: Props) => {
     return true;
   };
 
-  if (!props.split || props.split.length === 0 || !isSplitArrayCorrect()) {
+  if (split.length === 0 || !isSplitArrayCorrect()) {
     return <Text style={[highlightStyle, props.style]}>{props.children}</Text>;
   }
 
