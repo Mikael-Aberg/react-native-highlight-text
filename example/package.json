@@ -1,6 +1,6 @@
 {
-  "name": "react-native-text-highlight-example",
-  "description": "Example app for react-native-text-highlight",
+  "name": "react-native-highlight-text-example",
+  "description": "Example app for react-native-highlight-text",
   "version": "0.0.1",
   "private": true,
   "main": "index",

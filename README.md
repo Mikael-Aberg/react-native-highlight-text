@@ -1,15 +1,15 @@
-# react-native-text-highlight
+# react-native-highlight-text
 
 A simple way to highlight text in React Native
 
 ## Installation
 
 ```sh
-npm install --save react-native-text-highlight
+npm install --save react-native-highlight-text
 ```
 
 ```sh
-yarn add react-native-text-highlight
+yarn add react-native-highlight-text
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ yarn add react-native-text-highlight
 Highlight full text
 
 ```js
-import Highlight from 'react-native-text-highlight';
+import Highlight from 'react-native-highlight-text';
 
 <Highlight highlightColor="blue" highlightTextColor="white">
   Highlight the full sentence!
@@ -27,7 +27,7 @@ import Highlight from 'react-native-text-highlight';
 Highlight specific parts of the text
 
 ```js
-import Highlight, { type HighlightSplit } from 'react-native-text-highlight';
+import Highlight, { type HighlightSplit } from 'react-native-highlight-text';
 
 const split: HighlightSplit[] = [
   [0, 9],
@@ -43,7 +43,7 @@ const split: HighlightSplit[] = [
 Highlight using a RegEx
 
 ```js
-import Highlight from 'react-native-text-highlight';
+import Highlight from 'react-native-highlight-text';
 
 <Highlight
   highlightColor="blue"
@@ -51,6 +51,20 @@ import Highlight from 'react-native-text-highlight';
   highlightRegex={/(\d+)/g}
 >
   Highlight a sentence with RegEx! 12.234.54.676
+</Highlight>;
+```
+
+Highlight specific words
+
+```js
+import Highlight from 'react-native-highlight-text';
+
+<Highlight
+  highlightColor="blue"
+  highlightTextColor="white"
+  wordMatch={['matching', 'words', 'sentence!']}
+>
+  Highlight matching words in a sentence!
 </Highlight>;
 ```
 
@@ -66,7 +80,8 @@ If both split and highlightRegex props are not provided the full string will be 
 | highlightStyle     | StyleProp<TextStyle> |         | Style for the highlighted parts of the tex                                                                         |
 | children           | string               |         | The string to be shown                                                                                             |
 | split              | HighlightSplit[]     |         | A list of ranges to highlight. Created like [startIndex, endIndex, optional background color, optional text color] |
-| highlightRegex     | RegExp               |         | A regex used to highlight parts of the text. g flag is required. Will overwrite split prop                         |
+| highlightRegex     | RegExp               |         | A regex used to highlight parts of the text. g flag is required. Will overwrite split and wordMatch props          |
+| wordMatch          | string[]             |         | A list of case-sensitive words to highlight. Will overwrite split prop                                             |
 
 ## License
 

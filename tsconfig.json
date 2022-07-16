@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "react-native-text-highlight": ["./src/index"]
+      "react-native-highlight-text": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
