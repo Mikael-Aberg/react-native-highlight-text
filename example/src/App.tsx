@@ -1,25 +1,28 @@
 import * as React from 'react';
-
-import { StyleSheet, Text, View } from 'react-native';
-import Highlight from 'react-native-text-highlight';
+import { StyleSheet, View } from 'react-native';
+import Highlight, { HighlightSplit } from 'react-native-text-highlight';
 
 export default function App() {
+  // Generate a random color code
+  const rc = () => `#${`${Math.random().toString(16)}000000`.substring(2, 8)}`;
+
+  const split: HighlightSplit[] = [
+    [0, 9, , rc(), rc()],
+    [20, 25, rc(), rc()],
+    [31, 40, rc(), rc()],
+  ];
+
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          color: 'red',
-        }}
-      >
-        Hello
-      </Text>
       <Highlight
-        split={[
-          [0, 1],
-          [2, 7, 'red', 'blue'],
-        ]}
+        style={styles.text}
+        highlightColor="blue"
+        highlightTextColor="white"
       >
-        Hello world!
+        Highlight the full sentence!
+      </Highlight>
+      <Highlight style={styles.text} split={split}>
+        Highlight different parts of a sentence!
       </Highlight>
     </View>
   );
@@ -31,9 +34,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  text: {
+    marginVertical: 10,
+    fontSize: 16,
   },
 });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
-interface Test {
+export interface HighlightSplit {
   0: number;
   1: number;
   2?: string;
@@ -12,8 +12,9 @@ interface Props {
   highlightColor?: string;
   highlightTextColor?: string;
   style?: StyleProp<TextStyle>;
+  highlightStyle?: StyleProp<TextStyle>;
   children?: string;
-  split?: Test[];
+  split?: HighlightSplit[];
 }
 
 const Highlight = (props: Props) => {
@@ -21,6 +22,10 @@ const Highlight = (props: Props) => {
     color: props.highlightTextColor,
     backgroundColor: props.highlightColor,
   };
+
+  let split: HighlightSplit[] = [];
+
+  split = props.split?.sort((a, b) => a[0] - b[0]) || [];
 
   const splitString = (
     index: number,
@@ -46,7 +51,7 @@ const Highlight = (props: Props) => {
             color: color || props.highlightTextColor,
             backgroundColor: backgroundColor || props.highlightColor,
           },
-          props.style,
+          props.highlightStyle,
         ]}
       >
         {props.children?.substring(start, end)}
@@ -68,14 +73,33 @@ const Highlight = (props: Props) => {
     );
   };
 
-  // Hello world!
-  // Hel|lo |wo|rld!
+  const isSplitArrayCorrect = () => {
+    if (split[0]![0] > split[0]![1]) {
+      console.warn('Split start value needs to be less than the end value');
+      return false;
+    }
 
-  if (!props.split || props.split.length === 0) {
+    let highest = split[0]![1];
+    for (let i = 1; i < split.length; i++) {
+      if (split[i]![0] < highest) {
+        console.warn('Split array values can not overlap');
+        return false;
+      }
+      if (split[i]![0] > split[i]![1]) {
+        console.warn('Split start value needs to be less than the end value');
+        return false;
+      }
+      highest = split[i]![1];
+    }
+
+    return true;
+  };
+
+  if (!props.split || props.split.length === 0 || !isSplitArrayCorrect()) {
     return <Text style={[highlightStyle, props.style]}>{props.children}</Text>;
   }
 
-  return <Text>{splitString(0, 0)}</Text>;
+  return <Text style={props.style}>{splitString(0, 0)}</Text>;
 };
 
 const defaultProps: Partial<Props> = {
